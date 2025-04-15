@@ -135,3 +135,6 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 #! Telling django where to redirect users when they login
 LOGIN_REDIRECT_URL = 'feed-home'
+
+#! Telling django where login page is when users try to access profile without being logged in
+LOGIN_URL = 'login'
