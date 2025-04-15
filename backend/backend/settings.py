@@ -138,3 +138,8 @@ LOGIN_REDIRECT_URL = 'feed-home'
 
 #! Telling django where login page is when users try to access profile without being logged in
 LOGIN_URL = 'login'
+
+#! Telling django the full path where we would like to store uploaded files. Stored in directory instead of database for performance reasons
+MEDIA_ROOT = BASE_DIR.joinpath('media')
+#! How to access media through the browser
+MEDIA_URL = '/media/'
