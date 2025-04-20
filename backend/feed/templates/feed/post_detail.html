@@ -15,6 +15,14 @@
         </div>
         <h2 class="article-title">{{ object.title }}</h2>
         <p class="article-content">{{ object.content }}</p>
+        <small>{{ post.number_of_likes }} likes </small>
+        {% if user.is_authenticated %}
+            {% if user in post.likes.all %}
+            <a href="{% url 'post_like' post.id %}">Unlike</a>
+            {% else %}
+            <a href="{% url 'post_like' post.id %}">Like</a>
+            {% endif %}
+        {% endif %}
         </div>
     </article>
-{% endblock content %}
+{% endblock content %} 
