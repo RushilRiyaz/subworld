@@ -15,7 +15,9 @@
         </div>
         <img class="rounded-circle article-img" src="{{ post.sandwich_image.url }}"> <!-- Image design needs to be changed -->
         <h2 class="article-title">{{ object.sandwich }}</h2>
+        {% if object.about %}
         <p class="article-content">{{ object.about }}</p>
+        {% endif %}
         <div class="d-grid gap-2 d-md-block">
             {% for attribute in post.get_sandwich_attributes %}
                 <button type="button" class="btn btn-dark btn-sm mb-1">{{ attribute }}</button>
