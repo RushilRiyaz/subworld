@@ -1,4 +1,4 @@
-from django.shortcuts import redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Post
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
@@ -6,20 +6,17 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 
 
-# List View
 class PostListView(ListView):
     model = Post
     template_name = 'feed/home.html' # expects <app>/<model>_<viewtype>.html | feed/post_list.html 
     context_object_name = 'posts'
     ordering = ['-date_posted']
-    paginate_by = 5
+    paginate_by = 3
 
-# Detail view for each post
 class PostDetailView(DetailView):
     model = Post
 
 
-# Create view to create a new post
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
     fields = ['title', 'content']
@@ -29,7 +26,6 @@ class PostCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-# Updateview to edit already created post
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
     fields = ['title', 'content']
@@ -44,7 +40,7 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
             return True
         return False
     
-# Delete view to delete post
+
 class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Post
     success_url = '/'
@@ -56,12 +52,11 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         return False
     
 
-# List View for a specific user
 class UserPostListView(ListView):
     model = Post
     template_name = 'feed/user_posts.html'
     context_object_name = 'posts'
-    paginate_by = 5
+    paginate_by = 3
 
     def get_queryset(self):
         user = get_object_or_404(User, username=self.kwargs.get('username'))
@@ -75,3 +70,13 @@ def post_like(request, pk):
     else:
         post.likes.add(request.user)
     return redirect('post-detail', pk=pk)
+
+
+def search_posts(request):
+    if request.method == 'GET':
+        query = request.GET.get('query')
+        if query:
+            posts = Post.objects.filter(title__icontains=query)
+            return render(request, 'feed/search_posts.html', {'posts': posts})
+        else:
+            return render(request, 'feed/search_posts.html')

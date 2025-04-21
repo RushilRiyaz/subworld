@@ -1,0 +1,23 @@
+{% extends "feed/base.html" %}
+{% block content %}
+  {% if posts %}
+    {% for post in posts %}
+      <article class="media content-section">
+        <img class="rounded-circle article-img" src="{{ post.author.profile.image.url }}">
+        <div class="media-body">
+          <div class="article-metadata">
+            <a class="mr-2" href="{% url 'user-posts' post.author.username %}">{{ post.author }}</a>
+            <small class="text-muted">{{ post.date_posted|date:"F d, Y" }}</small>
+          </div>
+          <h2><a class="article-title" href="{% url 'post-detail' post.id %}">{{ post.title }}</a></h2>
+          <p class="article-content">{{ post.content }}</p>
+          <small>{{ post.number_of_likes }} likes </small>
+        </div>
+      </article>
+    {% endfor %}
+  {% else %}
+    <div class="alert alert-info">
+      No posts found matching your search.
+    </div>
+  {% endif %}
+{% endblock content %}
