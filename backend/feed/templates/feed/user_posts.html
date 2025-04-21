@@ -9,8 +9,14 @@
               <a class="mr-2" href="{% url 'user-posts' post.author.username %}">{{ post.author }}</a>
               <small class="text-muted">{{ post.date_posted|date:"F d, Y" }}</small>
             </div>
-            <h2><a class="article-title" href="{% url 'post-detail' post.id %}">{{ post.title }}</a></h2>
-            <p class="article-content">{{ post.content }}</p>
+            <img class="rounded-circle article-img" src="{{ post.sandwich_image.url }}"> <!-- Image design needs to be changed -->
+            <h2><a class="article-title" href="{% url 'post-detail' post.id %}">{{ post.sandwich }}</a></h2>
+            <p class="article-content">{{ post.about }}</p>
+            <div class="d-grid gap-2 d-md-block">
+              {% for attribute in post.get_sandwich_attributes %}
+                <button type="button" class="btn btn-dark btn-sm mb-1">{{ attribute }}</button>
+              {% endfor %}
+            </div>
             <small>{{ post.number_of_likes }} likes </small>
           </div>
         </article>

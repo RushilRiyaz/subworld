@@ -19,7 +19,7 @@ class PostDetailView(DetailView):
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
-    fields = ['title', 'content']
+    fields = ['sandwich', 'about', 'vegan', 'size', 'bread', 'meat', 'sauce_1', 'sauce_2', 'sauce_3', 'veggie_1', 'veggie_2', 'veggie_3', 'temp', 'price', 'sandwich_image']
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -28,7 +28,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
-    fields = ['title', 'content']
+    fields = ['sandwich', 'about', 'vegan', 'size', 'bread', 'meat', 'sauce_1', 'sauce_2', 'sauce_3', 'veggie_1', 'veggie_2', 'veggie_3', 'temp', 'price', 'sandwich_image']
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -76,7 +76,7 @@ def search_posts(request):
     if request.method == 'GET':
         query = request.GET.get('query')
         if query:
-            posts = Post.objects.filter(title__icontains=query)
+            posts = Post.objects.filter(sandwich__icontains=query)
             return render(request, 'feed/search_posts.html', {'posts': posts})
         else:
             return render(request, 'feed/search_posts.html')
