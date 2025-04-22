@@ -8,7 +8,6 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-
     <link rel="stylesheet" type="text/css" href="{% static 'feed/main.css' %}">
     <title>Subworld</title>
 </head>
@@ -17,7 +16,7 @@
       <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
         <div class="container">
           <a class="navbar-brand mr-4" href="{% url 'feed-home' %}" style="font-size: 1.5rem;">
-            <span style="color: white;">Sub</span><span style="color: #FFC20D;">World</span>
+            <span class="brand-sub">Sub</span><span class="brand-world">World</span>
           </a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -25,17 +24,16 @@
           <div class="collapse navbar-collapse" id="navbarToggle">
             <!-- Navbar Left Side -->
             <div class="navbar-nav mr-auto">
-              <a class="nav-item nav-link" href="{% url 'feed-home' %}" style="color: #FFC20D;">Home</a>
+              <a class="nav-item nav-link link-yellow" href="{% url 'feed-home' %}">Home</a>
             </div>
             
             <form action="{% url 'search-posts' %}" method="get">
-              <div class="input-group" >
-                <input class="form-control" name="query" type="text" placeholder="Search" aria-label="Search" style="background-color: #ffffff; border-color: #ffffff;">
+              <div class="input-group">
+                <input class="form-control input-search" name="query" type="text" placeholder="Search" aria-label="Search">
                 <div class="input-group-append">
-                  <button class="btn btn-outline-warning" type="submit" style="border-color: #ffffff; color: #ffffff;">
+                  <button class="btn btn-outline-warning btn-search" type="submit">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/></svg>
                   </button>
-                  <!-- https://icons.getbootstrap.com/icons/search/ -->
                 </div>
               </div>
             </form>
@@ -56,8 +54,8 @@
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#FFC20D" class="bi bi-box-arrow-right" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z"/><path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/></svg>
               </a>
               {% else %}
-              <a class="nav-item nav-link" href="{% url 'login' %}" style="color: #FFC20D;">Login</a>
-              <a class="nav-item nav-link" href="{% url 'register' %}" style="color: #FFC20D;" >Register</a>
+              <a class="nav-item nav-link link-yellow" href="{% url 'login' %}">Login</a>
+              <a class="nav-item nav-link link-yellow" href="{% url 'register' %}">Register</a>
               {% endif %}
             </div>
           </div>
@@ -69,7 +67,7 @@
         {% if messages %}
           {% for message in messages %}
             <div class="alert alert-{{ message.tags }}">
-              {{message}}
+              {{ message }}
             </div>
           {% endfor %}
         {% endif %}

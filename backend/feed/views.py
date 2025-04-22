@@ -2,16 +2,18 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Post
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.contrib.auth.models import User 
+from django.contrib.auth.models import User
 from django.contrib import messages
 
 
 class PostListView(ListView):
     model = Post
-    template_name = 'feed/home.html' # expects <app>/<model>_<viewtype>.html | feed/post_list.html 
+    # expects <app>/<model>_<viewtype>.html | feed/post_list.html
+    template_name = 'feed/home.html'
     context_object_name = 'posts'
     ordering = ['-date_posted']
-    paginate_by = 3
+    paginate_by = 6
+
 
 class PostDetailView(DetailView):
     model = Post
@@ -19,7 +21,8 @@ class PostDetailView(DetailView):
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
-    fields = ['sandwich', 'about', 'vegan', 'size', 'bread', 'meat', 'sauce_1', 'sauce_2', 'sauce_3', 'veggie_1', 'veggie_2', 'veggie_3', 'temp', 'price', 'sandwich_image']
+    fields = ['sandwich', 'about', 'vegan', 'size', 'bread', 'meat', 'sauce_1', 'sauce_2',
+              'sauce_3', 'veggie_1', 'veggie_2', 'veggie_3', 'temp', 'price', 'sandwich_image']
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -28,18 +31,19 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
-    fields = ['sandwich', 'about', 'vegan', 'size', 'bread', 'meat', 'sauce_1', 'sauce_2', 'sauce_3', 'veggie_1', 'veggie_2', 'veggie_3', 'temp', 'price', 'sandwich_image']
+    fields = ['sandwich', 'about', 'vegan', 'size', 'bread', 'meat', 'sauce_1', 'sauce_2',
+              'sauce_3', 'veggie_1', 'veggie_2', 'veggie_3', 'temp', 'price', 'sandwich_image']
 
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
-    
+
     def test_func(self):
         post = self.get_object()
         if self.request.user == post.author:
             return True
         return False
-    
+
 
 class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Post
@@ -50,33 +54,37 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         if self.request.user == post.author:
             return True
         return False
-    
+
 
 class UserPostListView(ListView):
     model = Post
     template_name = 'feed/user_posts.html'
     context_object_name = 'posts'
-    paginate_by = 3
+    paginate_by = 6
 
     def get_queryset(self):
         user = get_object_or_404(User, username=self.kwargs.get('username'))
-        return Post.objects.filter(author=user).order_by('-date_posted')  
-    
+        return Post.objects.filter(author=user).order_by('-date_posted')
+
+
+class SearchPostListView(ListView):
+    model = Post
+    template_name = 'feed/search_posts.html'
+    context_object_name = 'posts'
+    paginate_by = 6
+
+    def get_queryset(self):
+        query = self.request.GET.get('query')
+        if query:
+            return Post.objects.filter(sandwich__icontains=query).order_by('-date_posted')
+        return Post.objects.none()
+
 
 def post_like(request, pk):
-    post = get_object_or_404(Post, id=pk)
-    if post.likes.filter(id=request.user.id):
+    post = get_object_or_404(Post, pk=pk)
+    if request.user in post.likes.all():
         post.likes.remove(request.user)
     else:
         post.likes.add(request.user)
-    return redirect('post-detail', pk=pk)
-
-
-def search_posts(request):
-    if request.method == 'GET':
-        query = request.GET.get('query')
-        if query:
-            posts = Post.objects.filter(sandwich__icontains=query)
-            return render(request, 'feed/search_posts.html', {'posts': posts})
-        else:
-            return render(request, 'feed/search_posts.html')
+    # Redirect based on where the request came from
+    return redirect(request.META.get('HTTP_REFERER', 'home'))
