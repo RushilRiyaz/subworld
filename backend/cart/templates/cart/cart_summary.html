@@ -16,6 +16,21 @@
             <p class="article-content">{{ product.about }}</p>
             {% endif %}
             <h2>€{{ product.price }}</h2>
+            <div class="row">
+                <h2>Quantity:</h2>
+                <select class="form-select form-select-sm ml-3" id="qty-cart"> // ID = qty_cart
+                    {% for key, value in quantities.items %}
+                        {% if key == product.id|slugify %}
+                            <option selected>{{ value }}</option>
+                        {% endif %}
+                    {% endfor %}
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+            </div>
         </article>
     {% endfor %}
 </div>

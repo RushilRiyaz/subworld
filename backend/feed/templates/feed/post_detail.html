@@ -37,6 +37,17 @@
     <!-- Need to integrate into Post -->
     <div class="container">
         <button type="button" value="{{ post.id }}" class="btn btn-secondary" id="add-cart">Add To Cart</button>
+
+        <div class="row">
+            <h2>Quantity:</h2>
+            <select class="form-select form-select-sm ml-3" id="qty-cart"> // ID = qty_cart
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            </select>
+        </div>
     </div>
 
     <script>
@@ -48,6 +59,7 @@
                 url: "{% url 'cart_add' %}",
                 data: {
             product_id: $('#add-cart').val(),
+            product_qty: $('#qty-cart option:selected').text(),
             csrfmiddlewaretoken: '{{ csrf_token }}',
             action: 'post'
                 },
