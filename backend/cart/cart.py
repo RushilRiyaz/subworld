@@ -15,6 +15,26 @@ class Cart():
 		# Make sure cart is available on all pages of site
 		self.cart = cart
 
+	def cart_total(self):
+		# Get product IDS
+		product_ids = self.cart.keys()
+		# lookup those keys in our products database model
+		products = Post.objects.filter(id__in=product_ids)
+		# Get quantities
+		quantities = self.cart
+		# Start counting at 0
+		total = 0
+		
+		for key, value in quantities.items():
+			# Convert key string into into so we can do math
+			key = int(key)
+			for product in products:
+				if product.id == key:
+					total = total + (product.price * value)
+				#! TODO: Possible place to implement premium member offer. 
+		return total
+
+
 	def add(self, product, quantity):
 		product_id = str(product.id)
 		product_qty = str(quantity)
