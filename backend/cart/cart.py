@@ -1,3 +1,5 @@
+from feed.models import Post
+
 class Cart():
 	def __init__(self, request):
 		self.session = request.session
@@ -26,3 +28,11 @@ class Cart():
 
 	def __len__(self):
 		return len(self.cart)
+	
+	def get_prods(self):
+		# Get ids from cart
+		product_ids = self.cart.keys()
+		# use ids to lookup sandwiches in db
+		products = Post.objects.filter(id__in=product_ids)
+
+		return products

@@ -4,7 +4,10 @@ from feed.models import Post
 from django.http import JsonResponse
 
 def cart_summary(request):
-	return render(request, "cart/cart_summary.html", {})
+	# get cart
+	cart = Cart(request)
+	cart_products = cart.get_prods()
+	return render(request, "cart/cart_summary.html", {"cart_products": cart_products})
 
 def cart_add(request):
 	# Get the cart
