@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     #! 
     'feed.apps.FeedConfig',
     'users.apps.UsersConfig',
+    'cart.apps.CartConfig',
 
     #! Required for register form
     'crispy_forms',
