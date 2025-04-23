@@ -1,4 +1,5 @@
 from feed.models import Post
+from users.models import Profile
 
 class Cart():
 	def __init__(self, request):
@@ -34,6 +35,27 @@ class Cart():
 				#! TODO: Possible place to implement premium member offer. 
 		return total
 
+	def db_add(self, product, quantity):
+		product_id = str(product)
+		product_qty = str(quantity)
+		# Logic
+		if product_id in self.cart:
+			pass
+		else:
+			#self.cart[product_id] = {'price': str(product.price)}
+			self.cart[product_id] = int(product_qty)
+
+		self.session.modified = True
+
+		# Deal with logged in user
+		if self.request.user.is_authenticated:
+			# Get the current user profile
+			current_user = Profile.objects.filter(user__id=self.request.user.id)
+			carty = str(self.cart)
+			carty = carty.replace("\'", "\"")
+			# Save carty to the Profile Model
+			current_user.update(old_cart=str(carty))
+
 
 	def add(self, product, quantity):
 		product_id = str(product.id)
@@ -46,6 +68,16 @@ class Cart():
 			self.cart[product_id] = int(product_qty)
 
 		self.session.modified = True
+
+		# Deal with logged in user
+		if self.request.user.is_authenticated:
+			# Get the current user profile
+			current_user = Profile.objects.filter(user__id=self.request.user.id)
+			
+			carty = str(self.cart)
+			carty = carty.replace("\'", "\"")
+			# Save carty to the Profile Model
+			current_user.update(old_cart=str(carty))
 
 	def __len__(self):
 		return len(self.cart)
@@ -73,6 +105,15 @@ class Cart():
 
 		self.session.modified = True
 
+		# Deal with logged in user
+		if self.request.user.is_authenticated:
+			# Get the current user profile
+			current_user = Profile.objects.filter(user__id=self.request.user.id)
+			carty = str(self.cart)
+			carty = carty.replace("\'", "\"")
+			# Save carty to the Profile Model
+			current_user.update(old_cart=str(carty))
+
 	def delete(self, product):
 		product_id = str(product)
 		# Delete from dictionary/cart
@@ -80,3 +121,12 @@ class Cart():
 			del self.cart[product_id]
 
 		self.session.modified = True
+
+			# Deal with logged in user
+		if self.request.user.is_authenticated:
+			# Get the current user profile
+			current_user = Profile.objects.filter(user__id=self.request.user.id)
+			carty = str(self.cart)
+			carty = carty.replace("\'", "\"")
+			# Save carty to the Profile Model
+			current_user.update(old_cart=str(carty))

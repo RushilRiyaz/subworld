@@ -4,6 +4,11 @@ from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 
+from .models import Profile
+import json
+from cart.cart import Cart
+from django.contrib.auth.views import LoginView
+
 def register(request):
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
@@ -40,3 +45,20 @@ def profile(request):
         'p_form': p_form
     }
     return render(request, 'users/profile.html', context)
+
+class CustomLoginView(LoginView):
+    template_name = 'users/login.html'
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+
+        current_user = Profile.objects.get(user=self.request.user)
+        saved_cart = current_user.old_cart
+
+        if saved_cart:
+            converted_cart = json.loads(saved_cart)
+            cart = Cart(self.request)
+            for key, value in converted_cart.items():
+                cart.db_add(product=key, quantity=value)
+
+        return response
