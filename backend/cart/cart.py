@@ -12,7 +12,6 @@ class Cart():
 		if 'session_key' not in request.session:
 			cart = self.session['session_key'] = {}
 
-
 		# Make sure cart is available on all pages of site
 		self.cart = cart
 
@@ -51,5 +50,13 @@ class Cart():
 		ourcart = self.cart
 		# Update Dictionary/cart
 		ourcart[product_id] = product_qty
+
+		self.session.modified = True
+
+	def delete(self, product):
+		product_id = str(product)
+		# Delete from dictionary/cart
+		if product_id in self.cart:
+			del self.cart[product_id]
 
 		self.session.modified = True

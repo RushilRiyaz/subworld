@@ -1,39 +1,43 @@
 {% extends "feed/base.html" %}
 {% block content %}
 <div class="container">
-    <h1>Shopping Cart Page</h1>
-    {% for product in  cart_products %}
-        <article class="media content-section">
-            <img class="rounded-circle article-img" src="{{ product.author.profile.image.url }}">
-            <div class="media-body">
-            <div class="article-metadata">
-                <a class="mr-2" href="{% url 'user-posts' product.author.username %}">{{ product.author }}</a>
-                <small class="text-muted">{{ product.date_posted|date:"F d, Y" }}</small>
-            </div>
-            <img class="rounded-circle article-img" src="{{ product.sandwich_image.url }}"> <!-- Image design needs to be changed -->
-            <h2 class="article-title">{{ product.sandwich }}</h2>
-            {% if object.about %}
-            <p class="article-content">{{ product.about }}</p>
-            {% endif %}
-            <h2>€{{ product.price }}</h2>
-            <div class="row">
-                <h2>Quantity:</h2>
-                <select class="form-select form-select-sm ml-3" id="select{{product.id}}"> // ID = qty_cart
-                    {% for key, value in quantities.items %}
-                        {% if key == product.id|slugify %}
-                            <option selected>{{ value }}</option>
-                        {% endif %}
-                    {% endfor %}
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                </select>
-                <button type="button" data-index="{{product.id}}" class="btn btn-secondary update-cart">Update</button>
-            </div>
-        </article>
-    {% endfor %}
+    {% if product %}
+        {% for product in  cart_products %}
+            <article class="media content-section">
+                <img class="rounded-circle article-img" src="{{ product.author.profile.image.url }}">
+                <div class="media-body">
+                <div class="article-metadata">
+                    <a class="mr-2" href="{% url 'user-posts' product.author.username %}">{{ product.author }}</a>
+                    <small class="text-muted">{{ product.date_posted|date:"F d, Y" }}</small>
+                </div>
+                <img class="rounded-circle article-img" src="{{ product.sandwich_image.url }}"> <!-- Image design needs to be changed -->
+                <h2 class="article-title">{{ product.sandwich }}</h2>
+                {% if object.about %}
+                <p class="article-content">{{ product.about }}</p>
+                {% endif %}
+                <h2>€{{ product.price }}</h2>
+                <div class="row">
+                    <h2>Quantity:</h2>
+                    <select class="form-select form-select-sm ml-3" id="select{{product.id}}"> // ID = qty_cart
+                        {% for key, value in quantities.items %}
+                            {% if key == product.id|slugify %}
+                                <option selected>{{ value }}</option>
+                            {% endif %}
+                        {% endfor %}
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                    <button type="button" data-index="{{product.id}}" class="btn btn-secondary update-cart">Update</button>
+                    <button type="button" data-index="{{product.id}}" class="btn btn-danger delete-product">Remove</button>
+                </div>
+            </article>
+        {% endfor %}
+    {% else %}
+    <h1>Your Shopping Cart Is Empty</h1>
+    {% endif %}
 </div>
 
 <script>
@@ -47,14 +51,34 @@
         type: 'POST',
         url: "{% url 'cart_update' %}",
         data: {
-          product_id: $(this).data('index'),
-          product_qty: $('#select' + productid + ' option:selected').text(),
-          csrfmiddlewaretoken: '{{ csrf_token }}',
-          action: 'post'
+            product_id: $(this).data('index'),
+            product_qty: $('#select' + productid + ' option:selected').text(),
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            action: 'post'
         },
         success: function(json){
             //console.log(json)
             //document.getElementById("cart_quantity").textContent = json.qty
+            location.reload();
+        },
+        error: function(xhr, errmsg, err){
+        }
+        });
+    })
+
+    // Delete Item From Cart
+    $(document).on('click', '.delete-product', function(e){
+        e.preventDefault();
+        
+        $.ajax({
+        type: 'POST',
+        url: "{% url 'cart_delete' %}",
+        data: {
+            product_id: $(this).data('index'),
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            action: 'post'
+        },
+        success: function(json){
             location.reload();
         },
         error: function(xhr, errmsg, err){
