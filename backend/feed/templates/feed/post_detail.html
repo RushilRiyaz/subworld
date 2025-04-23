@@ -33,4 +33,32 @@
         {% endif %}
         </div>
     </article>
+
+    <!-- Need to integrate into Post -->
+    <div class="container">
+        <small>Post ID: {{ post.id }}</small>
+        <button type="button" value="{{ post.id }}" class="btn btn-secondary" id="add-cart">Add To Cart</button>
+    </div>
+
+    <script>
+        // Check if button pressed 
+        $(document).on('click', '#add-cart', function(e){
+            e.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'cart_add' %}",
+                data: {
+            product_id: $('#add-cart').val(),
+            product_qty: $('#qty-cart option:selected').text(),
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            action: 'post'
+                },
+                success: function(json){
+                    console.log(json)
+                },
+                error: function(xhr, errmsg, err){
+                }
+            });
+        })
+    </script>
 {% endblock content %}

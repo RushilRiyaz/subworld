@@ -36,13 +36,6 @@ class Post(models.Model):
     ('None', 'No Meat'),
     ]
 
-    PRICE_CHOICES = [
-        ('Under $5', 'Under $5'),
-        ('$5 - $10', '$5 - $10'),
-        ('$10 - $15', '$10 - $15'),
-        ('Above $15', 'Above $15'),
-    ]
-
     SAUCE_CHOICES = [
         ('Mayonnaise', 'Mayonnaise'),
         ('Mustard', 'Mustard'),
@@ -81,7 +74,7 @@ class Post(models.Model):
     veggie_2 = models.CharField(max_length=20, choices=VEGGIE_CHOICES, default='None')
     veggie_3 = models.CharField(max_length=20, choices=VEGGIE_CHOICES, default='None')
     temp = models.CharField(max_length=20, choices=TEMP_CHOICES, default='Hot')
-    price = models.CharField(max_length=20, choices=PRICE_CHOICES, default='$10 - $15')
+    price = models.DecimalField(default=0, decimal_places=2, max_digits=6)
     sandwich_image = models.ImageField(default='default_sandwich.jpg', upload_to='sandwich_pics')
 
     date_posted = models.DateTimeField(default=timezone.now)
@@ -111,5 +104,5 @@ class Post(models.Model):
             if veggie != 'None':
                 attributes.append(veggie)
         
-        attributes.append(self.price)
+        attributes.append("€" + str(self.price))
         return attributes
