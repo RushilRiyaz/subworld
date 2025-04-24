@@ -36,7 +36,7 @@
                   {% endif %}
                 </a>
               {% else %}
-                <!-- Number -->
+                <!-- Like Number -->
                 <span class="text-secondary d-flex align-items-center">
                   <span class="text-decoration-none">{{ post.number_of_likes }}</span>
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart ml-2" viewBox="0 0 16 16"><path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15"/></svg>
@@ -65,7 +65,7 @@
             <!-- Tags -->
             <div class="d-grid gap-2 d-md-block">
               {% for attribute in post.get_sandwich_attributes %}
-                <button type="button" class="btn btn-dark btn-sm mb-1">{{ attribute }}</button>
+                <button type="button" class="btn btn-filled-green btn-sm mb-1">{{ attribute }}</button>
               {% endfor %}
             </div>
           </div>
@@ -73,25 +73,28 @@
       </div>
     {% endfor %}
   </div>
-</div>
 
+
+<!-- Pagination -->
 {% if is_paginated %}
     {% if page_obj.has_previous %}
-      <a class="btn btn-outline-info mb-4" href="?page1">First</a>
-      <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+      <a class="btn btn-outline-yellow mb-4" href="?page=1">First</a>
+      <a class="btn btn-outline-yellow mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
     {% endif %}
 
     {% for num in page_obj.paginator.page_range %}
       {% if page_obj.number == num %}
-        <a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
+        <a class="btn btn-filled-yellow mb-4" href="?page={{ num }}">{{ num }}</a>
       {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-        <a class="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
+        <a class="btn btn-outline-yellow mb-4" href="?page={{ num }}">{{ num }}</a>
       {% endif %}
     {% endfor %}
 
     {% if page_obj.has_next %}
-    <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
-    <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+      <a class="btn btn-outline-yellow mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
+      <a class="btn btn-outline-yellow mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
     {% endif %}
 {% endif %}
+
+</div>
 {% endblock content %}

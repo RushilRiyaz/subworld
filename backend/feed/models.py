@@ -7,8 +7,8 @@ from django.urls import reverse
 class Post(models.Model):
 
     VEGAN_CHOICES = [
-    ('Vegan', 'Vegan'),
-    ('Non Vegan', 'Non Vegan'),
+        ('Vegan', 'Vegan'),
+        ('Non Vegan', 'Non Vegan'),
     ]
     
     TEMP_CHOICES = [
@@ -17,8 +17,8 @@ class Post(models.Model):
     ]
 
     SIZE_CHOICES = [
-    ('6-inch', '6-inch'),
-    ('Footlong', 'Footlong'),
+        ('6-inch', '6-inch'),
+        ('Footlong', 'Footlong'),
     ]
 
     BREAD_CHOICES = [
@@ -27,13 +27,13 @@ class Post(models.Model):
     ]
     
     MEAT_CHOICES = [
-    ('Turkey', 'Turkey'),
-    ('Chicken', 'Chicken'),
-    ('Ham', 'Ham'),
-    ('Beef', 'Beef'),
-    ('Tuna', 'Tuna'),
-    ('Salami', 'Salami'),
-    ('None', 'No Meat'),
+        ('Turkey', 'Turkey'),
+        ('Chicken', 'Chicken'),
+        ('Ham', 'Ham'),
+        ('Beef', 'Beef'),
+        ('Tuna', 'Tuna'),
+        ('Salami', 'Salami'),
+        ('None', 'No Meat'),
     ]
 
     SAUCE_CHOICES = [
@@ -61,8 +61,8 @@ class Post(models.Model):
         ('None', 'No Vegtables'),
     ]
 
-    sandwich = models.CharField(max_length=100)
-    about = models.CharField(max_length=300, null=True, blank=True)
+    sandwich = models.CharField(max_length=20)
+    about = models.CharField(max_length=100, null=True, blank=True)
     vegan = models.CharField(max_length=20, choices=VEGAN_CHOICES, default='Non Vegan')
     size = models.CharField(max_length=20, choices=SIZE_CHOICES, default='6-inch')
     bread = models.CharField(max_length=20, choices=BREAD_CHOICES, default='White Bread')
