@@ -1,9 +1,11 @@
+from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Post
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.db.models import Q
 
 
 class PostListView(ListView):
@@ -21,7 +23,7 @@ class PostDetailView(DetailView):
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
-    fields = ['sandwich', 'about', 'vegan', 'size', 'bread', 'meat', 'sauce_1', 'sauce_2',
+    fields = ['sandwich', 'about', 'vegan', 'size', 'bread', 'meat', 'cheese', 'sauce_1', 'sauce_2',
               'sauce_3', 'veggie_1', 'veggie_2', 'veggie_3', 'temp', 'price', 'sandwich_image']
 
     def form_valid(self, form):
@@ -31,7 +33,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
-    fields = ['sandwich', 'about', 'vegan', 'size', 'bread', 'meat', 'sauce_1', 'sauce_2',
+    fields = ['sandwich', 'about', 'vegan', 'size', 'bread', 'meat', 'cheese', 'sauce_1', 'sauce_2',
               'sauce_3', 'veggie_1', 'veggie_2', 'veggie_3', 'temp', 'price', 'sandwich_image']
 
     def form_valid(self, form):
@@ -75,8 +77,29 @@ class SearchPostListView(ListView):
 
     def get_queryset(self):
         query = self.request.GET.get('query')
+        print("Query:", query)
         if query:
-            return Post.objects.filter(sandwich__icontains=query).order_by('-date_posted')
+            # Handle Vegan specifically
+            if query.lower() == 'vegan':
+                return Post.objects.filter(vegan__iexact='Vegan').order_by('-date_posted')
+            elif query.lower() == 'non vegan':
+                return Post.objects.none()  # Non Vegan is not searchable
+            else:
+                return Post.objects.filter(
+                    Q(sandwich__icontains=query) |
+                    Q(about__icontains=query) |
+                    Q(bread__icontains=query) |
+                    Q(meat__icontains=query) |
+                    Q(cheese__icontains=query) |
+                    Q(sauce_1__icontains=query) |
+                    Q(sauce_2__icontains=query) |
+                    Q(sauce_3__icontains=query) |
+                    Q(veggie_1__icontains=query) |
+                    Q(veggie_2__icontains=query) |
+                    Q(veggie_3__icontains=query) |
+                    Q(temp__icontains=query) |
+                    Q(size__icontains=query)
+                ).order_by('-date_posted')
         return Post.objects.none()
 
 

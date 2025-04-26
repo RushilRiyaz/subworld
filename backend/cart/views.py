@@ -3,7 +3,9 @@ from .cart import Cart
 from feed.models import Post
 from django.http import JsonResponse
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
+@login_required
 def cart_summary(request):
 	# get cart
 	cart = Cart(request)

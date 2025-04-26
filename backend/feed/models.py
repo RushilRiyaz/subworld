@@ -7,10 +7,10 @@ from django.urls import reverse
 class Post(models.Model):
 
     VEGAN_CHOICES = [
-        ('Vegan', 'Vegan'),
         ('Non Vegan', 'Non Vegan'),
+        ('Vegan', 'Vegan'),
     ]
-    
+
     TEMP_CHOICES = [
         ('Hot', 'Hot'),
         ('Cold', 'Cold'),
@@ -22,51 +22,71 @@ class Post(models.Model):
     ]
 
     BREAD_CHOICES = [
-        ('White Bread', 'White Bread'),
-        ('Brown Bread', 'Brown Bread'),
+        ('White Italian', 'White Italian'),
+        ('9 Grain Wheat', '9 Grain Wheat'),
+        ('Multigrain Flatbread', 'Multigrain Flatbread'),
+        ('Italian Herbs & Cheese', 'Italian Herbs & Cheese'),
+        ('Flatbread', 'Flatbread'),
+        ('Gluten Free', 'Gluten Free'),
     ]
-    
+
     MEAT_CHOICES = [
-        ('Turkey', 'Turkey'),
-        ('Chicken', 'Chicken'),
-        ('Ham', 'Ham'),
-        ('Beef', 'Beef'),
-        ('Tuna', 'Tuna'),
-        ('Salami', 'Salami'),
         ('None', 'No Meat'),
+        ('Grilled Chicken', 'Grilled Chicken'),
+        ('Turkey', 'Turkey'),
+        ('Ham', 'Ham'),
+        ('Roast Beef', 'Roast Beef'),
+        ('Tuna', 'Tuna'),
+        ('Spicy Italian', 'Spicy Italian'),
+        ('Bacon', 'Bacon'),
+        ('Pepperoni', 'Pepperoni'),
+        ('Salami', 'Salami'),
+    ]
+
+    CHEESE_CHOICES = [
+        ('None', 'No Cheese'),
+        ('American', 'American'),
+        ('Cheddar', 'Cheddar'),
+        ('Pepper Jack', 'Pepper Jack'),
+        ('Provolone', 'Provolone'),
+        ('Swiss', 'Swiss'),
+        ('Mozzarella', 'Mozzarella'),
+        ('Vegan Cheese', 'Vegan Cheese'),
     ]
 
     SAUCE_CHOICES = [
+        ('None', 'No Sauce'),
         ('Mayonnaise', 'Mayonnaise'),
         ('Mustard', 'Mustard'),
-        ('Ketchup', 'Ketchup'),
-        ('BBQ Sauce', 'BBQ Sauce'),
+        ('Honey Mustard', 'Honey Mustard'),
+        ('Chipotle Southwest', 'Chipotle Southwest'),
         ('Ranch', 'Ranch'),
         ('Sweet Onion', 'Sweet Onion'),
-        ('Chipotle Southwest', 'Chipotle Southwest'),
-        ('Honey Mustard', 'Honey Mustard'),
-        ('Hot Sauce', 'Hot Sauce'),
-        ('None', 'No Sauce'),
+        ('BBQ Sauce', 'BBQ Sauce'),
+        ('Buffalo', 'Buffalo'),
     ]
 
     VEGGIE_CHOICES = [
-        ('Lettuce', 'Lettuce'),
-        ('Tomato', 'Tomato'),
-        ('Onion', 'Onion'),
-        ('Cucumber', 'Cucumber'),
-        ('Pickle', 'Pickle'),
-        ('Olive', 'Olivs'),
-        ('Jalapeno', 'Jalapeno'),
-        ('Green Pepper', 'Green Pepper'),
         ('None', 'No Vegtables'),
+        ('Lettuce', 'Lettuce'),
+        ('Spinach', 'Spinach'),
+        ('Tomato', 'Tomato'),
+        ('Cucumber', 'Cucumber'),
+        ('Green Pepper', 'Green Pepper'),
+        ('Onion', 'Onion'),
+        ('Banana Pepper', 'Banana Pepper'),
+        ('Jalapeno', 'Jalapeno'),
+        ('Pickle', 'Pickle'),
+        ('Olive', 'Olive'),
     ]
 
     sandwich = models.CharField(max_length=20)
     about = models.CharField(max_length=100, null=True, blank=True)
     vegan = models.CharField(max_length=20, choices=VEGAN_CHOICES, default='Non Vegan')
     size = models.CharField(max_length=20, choices=SIZE_CHOICES, default='6-inch')
-    bread = models.CharField(max_length=20, choices=BREAD_CHOICES, default='White Bread')
-    meat = models.CharField(max_length=20, choices=MEAT_CHOICES, default='Chicken')
+    bread = models.CharField(max_length=25, choices=BREAD_CHOICES, default='White Italian')
+    meat = models.CharField(max_length=20, choices=MEAT_CHOICES, default='None')
+    cheese = models.CharField(max_length=20, choices=CHEESE_CHOICES, default='None')
     sauce_1 = models.CharField(max_length=20, choices=SAUCE_CHOICES, default='None')
     sauce_2 = models.CharField(max_length=20, choices=SAUCE_CHOICES, default='None')
     sauce_3 = models.CharField(max_length=20, choices=SAUCE_CHOICES, default='None')
@@ -83,10 +103,10 @@ class Post(models.Model):
 
     def __str__(self):
         return self.sandwich
-    
+
     def get_absolute_url(self):
         return reverse('post-detail', kwargs={'pk': self.pk})
-    
+
     def number_of_likes(self):
         return self.likes.count()
 
@@ -94,15 +114,22 @@ class Post(models.Model):
         attributes = []
         if self.vegan != 'Non Vegan':
             attributes.append(self.vegan)
-        attributes.extend([self.size, self.bread, self.temp, self.meat])
-        
+        attributes.extend(
+            [self.size, self.bread, self.temp])
+
+        if self.meat != 'None':
+            attributes.append(self.meat)
+
+        if self.cheese != 'None':
+            attributes.append(self.cheese)
+
         for sauce in [self.sauce_1, self.sauce_2, self.sauce_3]:
             if sauce != 'None':
                 attributes.append(sauce)
-                
+
         for veggie in [self.veggie_1, self.veggie_2, self.veggie_3]:
             if veggie != 'None':
                 attributes.append(veggie)
-        
+
         attributes.append("€" + str(self.price))
         return attributes

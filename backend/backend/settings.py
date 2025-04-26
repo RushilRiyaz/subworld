@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    #! 
     'feed.apps.FeedConfig',
     'users.apps.UsersConfig',
     'cart.apps.CartConfig',
@@ -143,5 +142,6 @@ LOGIN_URL = 'login'
 
 #! Telling django the full path where we would like to store uploaded files. Stored in directory instead of database for performance reasons
 MEDIA_ROOT = BASE_DIR.joinpath('media')
+
 #! How to access media through the browser
 MEDIA_URL = '/media/'

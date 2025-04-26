@@ -1,56 +1,72 @@
 {% extends "feed/base.html" %}
 {% block content %}
-<div class="container">
-    {% if cart_products %}
-        {% for product in cart_products %}
-            <article class="media content-section">
-                <img class="rounded-circle article-img" src="{{ product.author.profile.image.url }}">
+<div class="container-fluid px-0 shop-cart-container">
+    {% if cart_products %}  <!-- Check if there are products in the cart -->
+        {% for product in cart_products %}  <!-- Loop through each product in the cart -->
+            <article class="shop-cart-post-cube">
                 <div class="media-body">
-                <div class="article-metadata">
-                    <a class="mr-2" href="{% url 'user-posts' product.author.username %}">{{ product.author }}</a>
-                    <small class="text-muted">{{ product.date_posted|date:"F d, Y" }}</small>
-                </div>
-                <img class="rounded-circle article-img" src="{{ product.sandwich_image.url }}"> <!-- Image design needs to be changed -->
-                <h2 class="article-title">{{ product.sandwich }}</h2>
-                {% if object.about %}
-                <p class="article-content">{{ product.about }}</p>
-                {% endif %}
-                <h2>€{{ product.price }}</h2>
-                <div class="row">
-                    <h2>Quantity:</h2>
-                    <select class="form-select form-select-sm ml-3" id="select{{product.id}}"> // ID = qty_cart
-                        {% for key, value in quantities.items %}
-                            {% if key == product.id|slugify %}
-                                <option selected>{{ value }}</option>
-                            {% endif %}
-                        {% endfor %}
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
-                    </select>
-                    <button type="button" data-index="{{product.id}}" class="btn btn-secondary update-cart">Update</button>
-                    <button type="button" data-index="{{product.id}}" class="btn btn-danger delete-product">Remove</button>
+                    <div class="shop-cart-rows-content"> 
+
+                        <!-- TITLE AND TAGS -->
+                        <div class="shop-cart-first-row">                    
+                            <h2 class="article-title title-text-move">{{ product.sandwich }}</h2>                           
+                            <div class="d-grid gap-2 d-md-block">  
+                                {% for attribute in product.get_sandwich_attributes %} 
+                                    <button type="button" class="btn btn-filled-green btn-sm mb-1">{{ attribute }}</button>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                    <!-- SANDWICH IMAGE -->
+                        <img class="sandwich-photo-shopping-cart" src="{{ product.sandwich_image.url }}">  
+                    </div>
+
+                    <!-- QUANITY OF SANDWICH -->
+                    <div class="second-row-shop-cart">
+                        <div class="row quantity-shop-cart-edit">
+                            <h2 class="quantity-text-shop-cart ">Quantity:</h2>
+                            <select class="form-select ml-3" id="qty-cart-{{ product.id }}">
+                                {% for key, value in quantities.items %}
+                                    {% if key == product.id|slugify %}
+                                        <option selected>{{ value }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                            </select>
+
+                        <!-- UPDATE AND REMOVE BUTTON -->
+                            <button type="button" data-index="{{ product.id }}" style="margin-left: 10px;" class="btn btn-outline-secondary btn-sm mt-1 mb-1 btn-hover-white update-cart">Update</button>
+                            <button type="button" data-index="{{ product.id }}" class="btn btn-outline-danger btn-sm mt-1 mb-1 btn-hover-white delete-product">Remove</button>
+                        </div>
+
+                        <!-- PRICE OF SANDWICH -->
+                        <h3 class="product-price-edit">€{{ product.price }}</h3>
+                    </div>                                    
                 </div>
             </article>
         {% endfor %}
-        <h3>Total: €{{ totals }}</h3>
+
+        <!-- TOTAL PRICE OF SANDWICHES -->
+        <h3 class="total-text-edit">Total: €{{ totals }}</h3>
     {% else %}
-        <h1>Your Shopping Cart Is Empty</h1>
+        <h1>Your Shopping Cart Is Empty!</h1>
     {% endif %}
 </div>
 
+
 <script>
-    // Update Cart
+    // UPDATE NUMBER OF SANDWICH IN CART
     $(document).on('click', '.update-cart', function(e){
         e.preventDefault();
-        // grab the product id
         var productid = $(this).data('index');
     
         $.ajax({
@@ -58,13 +74,11 @@
         url: "{% url 'cart_update' %}",
         data: {
             product_id: $(this).data('index'),
-            product_qty: $('#select' + productid + ' option:selected').text(),
+            product_qty: $('#qty-cart-' + productid + ' option:selected').text(),
             csrfmiddlewaretoken: '{{ csrf_token }}',
             action: 'post'
         },
         success: function(json){
-            //console.log(json)
-            //document.getElementById("cart_quantity").textContent = json.qty
             location.reload();
         },
         error: function(xhr, errmsg, err){
@@ -72,7 +86,7 @@
         });
     })
 
-    // Delete Item From Cart
+    // DELETE ITEM FROM CART
     $(document).on('click', '.delete-product', function(e){
         e.preventDefault();
         
@@ -91,5 +105,5 @@
         }
         });
     })
-    </script>
+</script>
 {% endblock content %}

@@ -2,103 +2,101 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <!-- Bootstrap CSS -->
+    <!-- BOOTSTRAP CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="{% static 'feed/main.css' %}">
     <title>Subworld</title>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
-<!-- Header -->
+	<!-- JQUERY -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 </head>
 <body>
     <header class="site-header">
-      <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
-        <div class="container">
-          <!-- Title -->
-          <a class="navbar-brand mr-4" href="{% url 'feed-home' %}" style="font-size: 1.5rem;">
-            <span class="brand-sub">Sub</span><span class="brand-world">World</span>
-          </a>
-          <!-- Collapsible Menu (It's for small screens)-->
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarToggle">
+		<nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+			<div class="container">
+				<!-- TITLE -->
+				<a class="navbar-brand mr-4" href="{% url 'feed-home' %}" style="font-size: 1.5rem;">
+					<span class="brand-sub">Sub</span><span class="brand-world">World</span>
+				</a>
+				<!-- COLLAPASABLE MENU WHEN SMALL SCREEN-->
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarToggle">
 
-    <!-- Navbar Left Side -->
-            <!-- Home -->
-            <div class="navbar-nav mr-auto">
-              <a class="nav-item nav-link link-yellow" href="{% url 'feed-home' %}">Home</a>
-            </div>
-            <!-- Search Bar -->
-            <form action="{% url 'search-posts' %}" method="get">
-              <div class="input-group">
-                <input class="form-control input-search" name="query" type="text" placeholder="Search" aria-label="Search">
-                <div class="input-group-append">
-                  <button class="btn btn-outline-warning btn-search" type="submit">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/></svg>
-                  </button>
-                </div>
-              </div>
-            </form>
+					<!-- NAVBAR LEFT SIDE -->
+					<!-- HOME -->
+					<div class="navbar-nav mr-auto">
+						<a class="nav-item nav-link link-yellow" href="{% url 'feed-home' %}">Home</a>
+					</div>
+					<!-- SEARCH BAR -->
+					<form action="{% url 'search-posts' %}" method="get">
+						<div class="input-group">
+							<input class="form-control input-search" name="query" type="text" placeholder="Search" aria-label="Search">
+							<div class="input-group-append">
+								<button class="btn btn-outline-warning btn-search" type="submit">
+									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/></svg>
+								</button>
+							</div>
+						</div>
+					</form>
 
-      <!-- Navbar Right Side -->
-            <div class="navbar-nav ml-4"> 
-              {% if user.is_authenticated %}
-              
-              <!-- Add Post -->
-              <a class="nav-item nav-link" href="{% url 'post-create' %}" title="Add Post">
-                <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-plus-circle-fill icon-yellow icon-size" viewBox="0 0 16 16"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/></svg>
-              </a>
-              <!-- Shopping Cart -->
-              <a class="nav-item nav-link shopping-cart-icon" href="{% url 'cart_summary' %}" title="Shopping Cart">
-                <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-bag icon-yellow" viewBox="0 0 16 16"><path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/></svg>
-                <span id="cart_quantity" class="shopping-cart-count">
-                  {{ cart|length }}
-                </span>
-                </a>
-              <!-- Bookmark -->
-              <a class="nav-item nav-link" href="{% url 'feed-home' %}" title="Bookmarks">
-                <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-bookmark-fill icon-yellow icon-size" viewBox="0 0 16 16"><path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2"/></svg>
-              </a>              
-              <!-- Profile -->
-              <a class="nav-item nav-link" href="{% url 'profile' %}" title="Profile">
-                <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-person-fill icon-yellow icon-size" viewBox="0 0 16 16"><path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/></svg>
-              </a>
-              <!-- Logout -->
-              <a class="nav-item nav-link" href="{% url 'logout' %}" title="Logout">
-                <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-box-arrow-right icon-yellow icon-size" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z"/><path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/></svg>
-              </a>
+					<!-- NAVBAR RIGHT SIDE -->
+					<div class="navbar-nav ml-4"> 
+						{% if user.is_authenticated %}
+							<!-- ADD POST -->
+							<a class="nav-item nav-link" href="{% url 'post-create' %}" title="Add Post">
+								<svg xmlns="http://www.w3.org/2000/svg" class="bi bi-plus-circle-fill icon-yellow icon-size" viewBox="0 0 16 16"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/></svg>
+							</a>
+							<!-- SHOPPING CART -->
+							<a class="nav-item nav-link shopping-cart-icon" href="{% url 'cart_summary' %}" title="Shopping Cart">
+								<svg xmlns="http://www.w3.org/2000/svg" class="bi bi-bag icon-yellow" viewBox="0 0 16 16"><path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/></svg>
+								<span id="cart_quantity" class="shopping-cart-count">
+									{{ cart|length }}
+								</span>
+							</a>
+							<!-- BOOKMARK -->
+							<a class="nav-item nav-link" href="{% url 'feed-home' %}" title="Bookmarks">
+								<svg xmlns="http://www.w3.org/2000/svg" class="bi bi-bookmark-fill icon-yellow icon-size" viewBox="0 0 16 16"><path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2"/></svg>
+							</a>              
+							<!-- PROFILE -->
+							<a class="nav-item nav-link" href="{% url 'profile' %}" title="Profile">
+								<svg xmlns="http://www.w3.org/2000/svg" class="bi bi-person-fill icon-yellow icon-size" viewBox="0 0 16 16"><path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/></svg>
+							</a>
+							<!-- LOGOUT -->
+							<a class="nav-item nav-link" href="{% url 'logout' %}" title="Logout">
+								<svg xmlns="http://www.w3.org/2000/svg" class="bi bi-box-arrow-right icon-yellow icon-size" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z"/><path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/></svg>
+							</a>
 
-              <!-- Log In + Register -->
-              {% else %}
-              <a class="nav-item nav-link link-yellow" href="{% url 'login' %}">Login</a>
-              <a class="nav-item nav-link link-yellow" href="{% url 'register' %}">Register</a>
-              {% endif %}
-            </div>
-          </div>
-        </div>
-      </nav>
+						<!-- LOGIN + REGISTER -->
+						{% else %}
+							<a class="nav-item nav-link link-yellow" href="{% url 'login' %}">Login</a>
+							<a class="nav-item nav-link link-yellow" href="{% url 'register' %}">Register</a>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+		</nav>
     </header>
     <main role="main" class="container">
-      <div>
-        {% if messages %}
-          {% for message in messages %}
-            <div class="alert alert-{{ message.tags }}">
-              {{ message }}
-            </div>
-          {% endfor %}
-        {% endif %}
-        
-        {% block content %}
-        {% endblock %}
-      </div>
-    </main>
+		<div>
+			{% if messages %}
+				{% for message in messages %}
+					<div class="alert alert-{{ message.tags }}">
+						{{ message }}
+					</div>
+				{% endfor %}
+			{% endif %}
+			
+			{% block content %}
+			{% endblock %}
+		</div>
+	</main>
 
-<!-- Popper.js, then Bootstrap JS -->
+<!-- JS POPPER JS / BOOTSTRAP JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-  </body>
+</body>
 </html>
