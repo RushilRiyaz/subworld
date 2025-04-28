@@ -2,3 +2,4 @@ Django
 Pillow
 django-crispy-forms
 crispy-bootstrap4
+django-filter

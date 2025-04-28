@@ -6,10 +6,19 @@ from .models import Profile
 
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField()
+    premium = forms.BooleanField(required=False, help_text='Get 10% off on all purchases!')
 
     class Meta:
         model = User
         fields = ['username', 'email', 'password1', 'password2']
+
+    def save(self, commit=True):
+        user = super().save(commit=commit)
+        if commit:
+            profile = user.profile
+            profile.premium = self.cleaned_data.get('premium', False)
+            profile.save()
+        return user
 
 class UserUpdateForm(forms.ModelForm):
     email = forms.EmailField()
@@ -21,4 +30,4 @@ class UserUpdateForm(forms.ModelForm):
 class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['image']
+        fields = ['image', 'premium']

@@ -1,5 +1,6 @@
 from feed.models import Post
 from users.models import Profile
+from decimal import Decimal
 
 class Cart():
 	def __init__(self, request):
@@ -31,8 +32,11 @@ class Cart():
 			key = int(key)
 			for product in products:
 				if product.id == key:
-					total = total + (product.price * value)
-				#! TODO: Possible place to implement premium member offer. 
+					if self.request.user.profile.premium:
+						total = total + (product.price * value)
+						total = total * Decimal('0.9')
+					else:
+						total = total + (product.price * value)  
 		return total
 
 	def db_add(self, product, quantity):

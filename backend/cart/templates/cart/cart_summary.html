@@ -56,7 +56,11 @@
         {% endfor %}
 
         <!-- TOTAL PRICE OF SANDWICHES -->
-        <h3 class="total-text-edit">Total: €{{ totals }}</h3>
+        {% if request.user.profile.premium %}
+            <h3 class="total-text-edit">Total (premium discount): €{{ totals|floatformat:2 }}</h3>
+        {% else %}
+            <h3 class="total-text-edit">Total: €{{ totals }}</h3>
+        {% endif %}
     {% else %}
         <h1>Your Shopping Cart Is Empty!</h1>
     {% endif %}
