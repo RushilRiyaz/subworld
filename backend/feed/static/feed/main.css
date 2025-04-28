@@ -507,3 +507,31 @@ a.text-decoration-none:hover span {
   padding-left: 0 !important;
   padding-right: 0 !important;
 }
+
+/* Filters */
+
+.filter-form select,
+.filter-form input[type="number"] {
+    max-width: 160px;
+    width: 80%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+/* Multi-select*/
+.filter-form select[multiple] {
+    height: auto;
+    max-height: 100px; 
+    overflow-y: auto;
+}
+
+.filters-container {
+  position: absolute;
+  left: -150px;
+  width: 180px;
+}
+
+
+
+

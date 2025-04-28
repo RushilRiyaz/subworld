@@ -41,10 +41,14 @@ INSTALLED_APPS = [
     'feed.apps.FeedConfig',
     'users.apps.UsersConfig',
     'cart.apps.CartConfig',
+    'comments.apps.CommentsConfig',
 
     #! Required for register form
     'crispy_forms',
-    'crispy_bootstrap4'
+    'crispy_bootstrap4',
+
+    #! Search Bar
+    'django_filters',
 ]
 
 MIDDLEWARE = [

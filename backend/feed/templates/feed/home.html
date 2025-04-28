@@ -1,103 +1,138 @@
 {% extends "feed/base.html" %}
 {% block content %}
-<div class="container">
-    <div class="row">
-        {% for post in posts %}
-            <div class="col-md-4 mb-4">
-                <article class="card border h-100">
-                    <!-- SANDWICH IMAGE -->
-                    <a href="{% url 'post-detail' post.id %}">
-                        <img src="{{ post.sandwich_image.url }}" class="post-image" alt="{{ post.sandwich }}">
-                    </a>
+<div class="container position-relative">
 
-                    <!-- CARD BODY -->
-                    <div class="card-body">
-                        <!-- TITLE + LIKES -->
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <!-- TILES -->
-                            <h5 class="card-title mb-0">
-                                <a href="{% url 'post-detail' post.id %}" class="article-title text-decoration-none">
-                                    {{ post.sandwich }}
-                                </a>
-                            </h5>
 
-                            <!-- LIKES -->
-                            {% if user.is_authenticated %}
-                                <a href="{% url 'post_like' post.id %}" class="text-danger d-flex align-items-center text-decoration-none">
-                                    <span class="text-decoration-none">{{ post.number_of_likes }}</span>
-                                    {% if user in post.likes.all %}
-                                        <!-- FILLED HEART -->
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill ml-2" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314"/></svg>
-                                    {% else %}
-                                        <!-- EMPTY HEART -->
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart ml-2" viewBox="0 0 16 16"><path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15"/></svg>
-                                    {% endif %}
-                                </a>
-                            {% else %}
-                                <!-- LIKE NUMBER -->
-                                <a href="{% url 'login' %}" class="text-dark d-flex align-items-center ml-2 text-decoration-none comment-button-edit">
-                                    <span class="text-secondary d-flex align-items-center">
-                                        <span class="text-decoration-none">{{ post.number_of_likes }}</span>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart ml-2" viewBox="0 0 16 16"><path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15"/></svg>
-                                    </span>
-                                </a>
-                            {% endif %}
-                        </div>
 
-                        <!-- USER AND DATE -->
-                        <div class="d-flex align-items-center mb-2">
-                            <img src="{{ post.author.profile.image.url }}" alt="{{ post.author }}" class="author-img">
-                            <small class="text-muted">
-                                <a href="{% url 'user-posts' post.author.username %}" class="author-link">
-                                    {{ post.author }}
-                                </a> &nbsp;-&nbsp;
-                                {{ post.date_posted|date:"F d, Y" }}
-                            </small>
-                        </div>
-
-                        <!-- ABOUT -->
-                        {% if post.about %}
-                            <p class="card-text mb-2">
-                                {{ post.about }}
-                            </p>
-                        {% endif %}
-
-                        <!-- TAGS -->
-                        <div class="d-grid gap-2 d-md-block">
-                            {% for attribute in post.get_sandwich_attributes %}
-                                <button type="button" class="btn btn-filled-green btn-sm mb-1">{{ attribute }}</button>
-                            {% endfor %}
-                        </div>
-                    </div>
-                </article>
-            </div>
-        {% endfor %}
+    <!-- FILTERS -->
+    <div style="position: absolute; left: -150px; width: 180px;">
+        {% include "feed/filter.html" %}
     </div>
-
-
-    <!-- PAGINATION -->
-    {% if is_paginated %}
-        {% if page_obj.has_previous %}
-            <a class="btn btn-outline-yellow mb-4" href="?page=1">First</a>
-            <a class="btn btn-outline-yellow mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+    
+    
+    <!-- FILTERS APPLIED MESSAGE -->
+        {% if request.GET %}
+            {% with request.GET.items as items %}
+                <h2 class="mb-4">
+                    Filtered By:
+                    {% for key, value in items %}
+                        {% if value and key != 'page' %}
+                            {{ value }}{% if not forloop.last %},{% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </h2>
+            {% endwith %}
         {% endif %}
+        
+    {% if posts %}
 
-        {% for num in page_obj.paginator.page_range %}
-            {% if page_obj.number == num %}
-                <a class="btn btn-filled-yellow mb-4" href="?page={{ num }}">{{ num }}</a>
-            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-                <a class="btn btn-outline-yellow mb-4" href="?page={{ num }}">{{ num }}</a>
-            {% endif %}
-        {% endfor %}
+        <!-- POSTS -->
+        <div class="row">
+            {% for post in posts %}
+                <div class="col-md-4 mb-4">
+                    <article class="card border h-100">
 
-        {% if page_obj.has_next %}
-            <a class="btn btn-outline-yellow mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
-            <a class="btn btn-outline-yellow mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+                        <!-- SANDWICH IMAGE -->
+                        <a href="{% url 'post-detail' post.id %}">
+                            <img src="{{ post.sandwich_image.url }}" class="post-image" alt="{{ post.sandwich }}">
+                        </a>
+
+                        <!-- CARD BODY -->
+                        <div class="card-body">
+                            <!-- TITLE + LIKES -->
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <!-- TILES -->
+                                <h5 class="card-title mb-0">
+                                    <a href="{% url 'post-detail' post.id %}" class="article-title text-decoration-none">
+                                        {{ post.sandwich }}
+                                    </a>
+                                </h5>
+
+                                <!-- LIKES -->
+                                {% if user.is_authenticated %}
+                                    <a href="{% url 'post_like' post.id %}" class="text-danger d-flex align-items-center text-decoration-none">
+                                        <span class="text-decoration-none">{{ post.number_of_likes }}</span>
+                                        {% if user in post.likes.all %}
+                                            <!-- FILLED HEART -->
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill ml-2" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314"/></svg>
+                                        {% else %}
+                                            <!-- EMPTY HEART -->
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart ml-2" viewBox="0 0 16 16"><path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15"/></svg>
+                                        {% endif %}
+                                    </a>
+                                {% else %}
+                                    <!-- LIKE NUMBER -->
+                                    <a href="{% url 'login' %}" class="text-dark d-flex align-items-center ml-2 text-decoration-none comment-button-edit">
+                                        <span class="text-secondary d-flex align-items-center">
+                                            <span class="text-decoration-none">{{ post.number_of_likes }}</span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart ml-2" viewBox="0 0 16 16"><path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15"/></svg>
+                                        </span>
+                                    </a>
+                                {% endif %}
+                            </div>
+
+                            <!-- USER AND DATE -->
+                            <div class="d-flex align-items-center mb-2">
+                                <img src="{{ post.author.profile.image.url }}" alt="{{ post.author }}" class="author-img">
+                                <small class="text-muted">
+                                    <a href="{% url 'user-posts' post.author.username %}" class="author-link">
+                                        {{ post.author }}
+                                    </a> &nbsp;-&nbsp;
+                                    {{ post.date_posted|date:"F d, Y" }}
+                                </small>
+                            </div>
+
+                            <!-- ABOUT -->
+                            {% if post.about %}
+                                <p class="card-text mb-2">
+                                    {{ post.about }}
+                                </p>
+                            {% endif %}
+
+                            <!-- TAGS -->
+                            <div class="d-grid gap-2 d-md-block">
+                                {% for attribute in post.get_sandwich_attributes %}
+                                    <button type="button" class="btn btn-filled-green btn-sm mb-1">{{ attribute }}</button>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- PAGINATION -->
+        {% if is_paginated %}
+            {% with request.GET.urlencode as query_params %}
+                {% with query_params|cut:'page='|cut:'&page=' as clean_query %}
+                    {% if page_obj.has_previous %}
+                        <a class="btn btn-outline-yellow mb-4" href="?page=1{% if clean_query %}&{{ clean_query }}{% endif %}">First</a>
+                        <a class="btn btn-outline-yellow mb-4" href="?page={{ page_obj.previous_page_number }}{% if clean_query %}&{{ clean_query }}{% endif %}">Previous</a>
+                    {% endif %}
+        
+                    {% for num in page_obj.paginator.page_range %}
+                        {% if page_obj.number == num %}
+                            <a class="btn btn-filled-yellow mb-4" href="?page={{ num }}{% if clean_query %}&{{ clean_query }}{% endif %}">{{ num }}</a>
+                        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                            <a class="btn btn-outline-yellow mb-4" href="?page={{ num }}{% if clean_query %}&{{ clean_query }}{% endif %}">{{ num }}</a>
+                        {% endif %}
+                    {% endfor %}
+        
+                    {% if page_obj.has_next %}
+                        <a class="btn btn-outline-yellow mb-4" href="?page={{ page_obj.next_page_number }}{% if clean_query %}&{{ clean_query }}{% endif %}">Next</a>
+                        <a class="btn btn-outline-yellow mb-4" href="?page={{ page_obj.paginator.num_pages }}{% if clean_query %}&{{ clean_query }}{% endif %}">Last</a>
+                    {% endif %}
+                {% endwith %}
+            {% endwith %}
         {% endif %}
+    
+
+    <!-- FILTERS NO RESULTS -->
+    {% else %}
+        <div class="alert alert-info mt-4">
+            No posts found matching your filter criteria.
+        </div>
     {% endif %}
 
 </div>
 {% endblock content %}
-
-
-

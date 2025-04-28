@@ -82,20 +82,32 @@ class Post(models.Model):
 
     sandwich = models.CharField(max_length=20)
     about = models.CharField(max_length=100, null=True, blank=True)
-    vegan = models.CharField(max_length=20, choices=VEGAN_CHOICES, default='Non Vegan')
-    size = models.CharField(max_length=20, choices=SIZE_CHOICES, default='6-inch')
-    bread = models.CharField(max_length=25, choices=BREAD_CHOICES, default='White Italian')
-    meat = models.CharField(max_length=20, choices=MEAT_CHOICES, default='None')
-    cheese = models.CharField(max_length=20, choices=CHEESE_CHOICES, default='None')
-    sauce_1 = models.CharField(max_length=20, choices=SAUCE_CHOICES, default='None')
-    sauce_2 = models.CharField(max_length=20, choices=SAUCE_CHOICES, default='None')
-    sauce_3 = models.CharField(max_length=20, choices=SAUCE_CHOICES, default='None')
-    veggie_1 = models.CharField(max_length=20, choices=VEGGIE_CHOICES, default='None')
-    veggie_2 = models.CharField(max_length=20, choices=VEGGIE_CHOICES, default='None')
-    veggie_3 = models.CharField(max_length=20, choices=VEGGIE_CHOICES, default='None')
+    vegan = models.CharField(
+        max_length=20, choices=VEGAN_CHOICES, default='Non Vegan')
+    size = models.CharField(
+        max_length=20, choices=SIZE_CHOICES, default='6-inch')
+    bread = models.CharField(
+        max_length=25, choices=BREAD_CHOICES, default='White Italian')
+    meat = models.CharField(
+        max_length=20, choices=MEAT_CHOICES, default='None')
+    cheese = models.CharField(
+        max_length=20, choices=CHEESE_CHOICES, default='None')
+    sauce_1 = models.CharField(
+        max_length=20, choices=SAUCE_CHOICES, default='None')
+    sauce_2 = models.CharField(
+        max_length=20, choices=SAUCE_CHOICES, default='None')
+    sauce_3 = models.CharField(
+        max_length=20, choices=SAUCE_CHOICES, default='None')
+    veggie_1 = models.CharField(
+        max_length=20, choices=VEGGIE_CHOICES, default='None')
+    veggie_2 = models.CharField(
+        max_length=20, choices=VEGGIE_CHOICES, default='None')
+    veggie_3 = models.CharField(
+        max_length=20, choices=VEGGIE_CHOICES, default='None')
     temp = models.CharField(max_length=20, choices=TEMP_CHOICES, default='Hot')
     price = models.DecimalField(default=0, decimal_places=2, max_digits=6)
-    sandwich_image = models.ImageField(default='default_sandwich.jpg', upload_to='sandwich_pics')
+    sandwich_image = models.ImageField(
+        default='default_sandwich.jpg', upload_to='sandwich_pics')
 
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(User, on_delete=models.CASCADE)

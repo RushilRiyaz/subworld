@@ -6,15 +6,29 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.db.models import Q
+from comments.forms import CommentForm
+
+
+from .models import Post
+from .filters import SandwichFilter
 
 
 class PostListView(ListView):
     model = Post
-    # expects <app>/<model>_<viewtype>.html | feed/post_list.html
     template_name = 'feed/home.html'
     context_object_name = 'posts'
     ordering = ['-date_posted']
     paginate_by = 6
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        self.filterset = SandwichFilter(self.request.GET, queryset=queryset)
+        return self.filterset.qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['filter'] = self.filterset
+        return context
 
 
 class PostDetailView(DetailView):
@@ -76,16 +90,17 @@ class SearchPostListView(ListView):
     paginate_by = 6
 
     def get_queryset(self):
+        queryset = Post.objects.all().order_by('-date_posted')
         query = self.request.GET.get('query')
-        print("Query:", query)
+
         if query:
-            # Handle Vegan specifically
             if query.lower() == 'vegan':
-                return Post.objects.filter(vegan__iexact='Vegan').order_by('-date_posted')
+                queryset = Post.objects.filter(
+                    vegan__iexact='Vegan').order_by('-date_posted')
             elif query.lower() == 'non vegan':
-                return Post.objects.none()  # Non Vegan is not searchable
+                queryset = Post.objects.none()
             else:
-                return Post.objects.filter(
+                queryset = Post.objects.filter(
                     Q(sandwich__icontains=query) |
                     Q(about__icontains=query) |
                     Q(bread__icontains=query) |
@@ -100,7 +115,7 @@ class SearchPostListView(ListView):
                     Q(temp__icontains=query) |
                     Q(size__icontains=query)
                 ).order_by('-date_posted')
-        return Post.objects.none()
+        return queryset
 
 
 def post_like(request, pk):
@@ -111,3 +126,14 @@ def post_like(request, pk):
         post.likes.add(request.user)
     # Redirect based on where the request came from
     return redirect(request.META.get('HTTP_REFERER', 'home'))
+
+
+class PostDetailView(DetailView):
+    model = Post
+    template_name = 'feed/post_detail.html'
+    context_object_name = 'post'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = CommentForm()
+        return context

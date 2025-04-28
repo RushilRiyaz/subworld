@@ -8,6 +8,7 @@ urlpatterns = [
     path('', include('feed.urls')),
     path('', include('users.urls')),
     path('', include('cart.urls')),
+    path('', include('comments.urls')),
 ]
 
 if settings.DEBUG:

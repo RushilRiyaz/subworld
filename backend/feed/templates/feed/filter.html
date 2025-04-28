@@ -1,0 +1,60 @@
+<form method="get" class="filter-form">
+    <div class="container position-relative">
+        
+        <!-- VEGAN -->
+        <div style="margin-bottom: 10px;">
+            <label>Vegan:</label><br>
+            {{ filter.form.vegan }}
+        </div>
+        <!-- SIZE -->
+        <div style="margin-bottom: 10px;">
+            <label>Size:</label><br>
+            {{ filter.form.size }}
+        </div>
+        <!-- BREAD -->
+        <div style="margin-bottom: 10px;">
+            <label>Bread:</label><br>
+            {{ filter.form.bread }}
+        </div>
+        <!-- MEAT -->
+        <div style="margin-bottom: 10px;">
+            <label>Meat:</label><br>
+            {{ filter.form.meat }}
+        </div>
+        <!-- CHEESE -->
+        <div style="margin-bottom: 10px;">
+            <label>Cheese:</label><br>
+            {{ filter.form.cheese }}
+        </div>
+        <!-- VEGGIES -->
+        <div style="margin-bottom: 10px;">
+            <label>Veggies:</label><br>
+            {{ filter.form.veggies }}
+        </div>
+        <!-- SAUCES -->
+        <div style="margin-bottom: 10px;">
+            <label>Sauces:</label><br>
+            {{ filter.form.sauces }}
+        </div>
+        <!-- TEMP -->
+        <div style="margin-bottom: 10px;">
+            <label>Temperature:</label><br>
+            {{ filter.form.temp }}
+        </div>
+        <!-- PRICE -->
+        <div style="margin-bottom: 10px;">
+            <label>Min Price:</label><br>
+            {{ filter.form.price__gt }}
+        </div>
+        <div style="margin-bottom: 10px;">
+            <label>Max Price:</label><br>
+            {{ filter.form.price__lt }}
+        </div>
+        
+        <!-- FILTER + RESET BUTTON -->
+        <div class="d-flex">
+            <button type="submit" class="btn btn-outline-yellow mb-4">Filter</button>
+            <a href="{% url 'feed-home' %}" class="btn btn-outline-danger mb-4 ml-2">Reset</a>
+        </div>
+    </div>
+</form>

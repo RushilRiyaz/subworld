@@ -130,6 +130,36 @@
             </small>
         </div>
     </article>
+    
+    <!--POST COMMENTS-->
+    <h3>Comments</h3>
+
+    {% for comment in post.comments.all %}
+        <div>
+            <strong>{{ comment.user.username }}</strong>: {{ comment.content }}
+
+            {% if comment.user == user %}
+                <!--DELETE COMMENT BUTTON -->
+                <form method="POST" action="{% url 'comments:delete_comment' comment.id %}" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                </form>
+            {% endif %}
+        </div>
+    {% empty %}
+        <p>No comments yet.</p>
+    {% endfor %}
+    <h4>Add a comment:</h4>
+    {% if user.is_authenticated %}
+    <!-- COMMENT FORM TO ADD COMMENT -->
+        <form method="post" action="{% url 'comments:add_comment' post.id %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-success btn-sm">Add Comment</button>
+        </form>
+    {% else %}
+        <p><a href="{% url 'login' %}">Login</a> to add a comment.</p>
+    {% endif %}
 
     <script>
         // ADD ITEM TO CART
