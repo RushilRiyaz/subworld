@@ -2,31 +2,20 @@
 {% block content %}
 <div class="container position-relative">
 
-
-
     <!-- FILTERS -->
-    <div style="position: absolute; left: -150px; width: 180px;">
+    <div class="filters-container">
         {% include "feed/filter.html" %}
     </div>
-    
-    
-    <!-- FILTERS APPLIED MESSAGE -->
-        {% if request.GET %}
-            {% with request.GET.items as items %}
-                <h2 class="mb-4">
-                    Filtered By:
-                    {% for key, value in items %}
-                        {% if value and key != 'page' %}
-                            {{ value }}{% if not forloop.last %},{% endif %}
-                        {% endif %}
-                    {% endfor %}
-                </h2>
-            {% endwith %}
-        {% endif %}
-        
-    {% if posts %}
 
-        <!-- POSTS -->
+    <!-- FILTERS APPLIED MESSAGE -->
+    {% if filters_applied %}
+        <h2 class="mb-4">
+            Filtered By: {{ filters_applied|join:", " }}
+        </h2>
+    {% endif %}
+
+    <!-- POSTS -->
+    {% if posts %}
         <div class="row">
             {% for post in posts %}
                 <div class="col-md-4 mb-4">

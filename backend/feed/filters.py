@@ -1,9 +1,19 @@
 import django_filters
-from django.db.models import Q
+from django.db.models import Q, Count
 from .models import Post
+
+SORT_CHOICES = (
+    ('recent', 'Most Recent'),
+    ('popular', 'Most Popular'),
+)
 
 
 class SandwichFilter(django_filters.FilterSet):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.filters['veggies'].field.widget.attrs.update({'class': 'multi-limit'})
+        self.filters['sauces'].field.widget.attrs.update({'class': 'multi-limit'})
 
     # VEGAN
     vegan = django_filters.ChoiceFilter(
@@ -47,14 +57,33 @@ class SandwichFilter(django_filters.FilterSet):
             )
         return queryset.distinct()
 
-    # REMAINING CATEGORIES
+    # POPULARITY
+    sort = django_filters.ChoiceFilter(
+        label='Sort By',
+        choices=SORT_CHOICES,
+        method='filter_by_sort',
+        empty_label=None,
+    )
+
+    def filter_by_sort(self, queryset, name, value):
+        if value == 'popular':
+            return queryset.order_by('-num_likes', '-date_posted')
+        return queryset.order_by('-date_posted')
+
+    # CATEGORIES
+
     class Meta:
         model = Post
         fields = [
+            'sort',
             'vegan',
             'size',
             'bread',
             'meat',
             'cheese',
+            'veggies',
+            'sauces',
             'temp',
+            'price__gt',
+            'price__lt'
         ]

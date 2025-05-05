@@ -1,0 +1,100 @@
+{% extends "feed/base.html" %}
+
+{% block content %}
+<div class="container position-relative">
+    <h1>My Bookmarks</h1>
+
+    {% if posts %}
+        <div class="row">
+            {% for post in posts %}
+                <div class="col-md-4 mb-4">
+                    <article class="card border h-100">
+
+                        <!-- SANDWICH IMAGE -->
+                        <a href="{% url 'post-detail' post.id %}">
+                            <img src="{{ post.sandwich_image.url }}" class="post-image" alt="{{ post.sandwich }}">
+                        </a>
+
+                        <!-- CARD BODY -->
+                        <div class="card-body">
+                            <!-- TITLE + LIKES -->
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <h5 class="card-title mb-0">
+                                    <a href="{% url 'post-detail' post.id %}" class="article-title text-decoration-none">
+                                        {{ post.sandwich }}
+                                    </a>
+                                </h5>
+
+                                <!-- BOOKMARK BUTTON -->
+                                {% if user.is_authenticated %}
+                                <a href="{% url 'toggle_bookmark' post.id %}" class="text-dark d-flex align-items-center text-decoration-none p-1" title="Remove Bookmark">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-fill" viewBox="0 0 16 16">
+                                        <path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2"/>
+                                    </svg>
+                                </a>
+                                {% else %}
+                                <a href="{% url 'login' %}" class="text-dark d-flex align-items-center text-decoration-none p-1" title="Bookmark">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="currentColor" class="bi bi-bookmark" viewBox="0 0 16 16">
+                                        <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1z"/>
+                                    </svg>
+                                </a>
+                                {% endif %}
+                            </div>
+
+                            <!-- USER AND DATE -->
+                            <div class="d-flex align-items-center mb-2">
+                                <img src="{{ post.author.profile.image.url }}" alt="{{ post.author }}" class="author-img">
+                                <small class="text-muted">
+                                    <a href="{% url 'user-posts' post.author.username %}" class="author-link">
+                                        {{ post.author }}
+                                    </a> &nbsp;-&nbsp;
+                                    {{ post.date_posted|date:"F d, Y" }}
+                                </small>
+                            </div>
+
+                            <!-- ABOUT -->
+                            {% if post.about %}
+                                <p class="card-text mb-2">
+                                    {{ post.about }}
+                                </p>
+                            {% endif %}
+
+                            <!-- TAGS -->
+                            <div class="d-grid gap-2 d-md-block">
+                                {% for attribute in post.get_sandwich_attributes %}
+                                    <button type="button" class="btn btn-filled-green btn-sm mb-1">{{ attribute }}</button>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            {% endfor %}
+        </div>
+        
+        {% if is_paginated %}
+            {% if page_obj.has_previous %}
+                <a class="btn btn-outline-yellow mb-4" href="?page=1">First</a>
+                <a class="btn btn-outline-yellow mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+            {% endif %}
+
+            {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                    <a class="btn btn-filled-yellow mb-4" href="?page={{ num }}">{{ num }}</a>
+                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                    <a class="btn btn-outline-yellow mb-4" href="?page={{ num }}">{{ num }}</a>
+                {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+                <a class="btn btn-outline-yellow mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
+                <a class="btn btn-outline-yellow mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+            {% endif %}
+        {% endif %}
+
+    {% else %}
+        <div class="alert alert-success mt-4">
+            You dont have any bookmarks yet. 
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

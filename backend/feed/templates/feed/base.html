@@ -12,6 +12,7 @@
 	<!-- JQUERY -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 </head>
+	
 <body>
     <header class="site-header">
 		<nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
@@ -58,9 +59,10 @@
 								</span>
 							</a>
 							<!-- BOOKMARK -->
-							<a class="nav-item nav-link" href="{% url 'feed-home' %}" title="Bookmarks">
+							<a class="nav-item nav-link" href="{% url 'bookmark_list' %}" title="Bookmarks">
 								<svg xmlns="http://www.w3.org/2000/svg" class="bi bi-bookmark-fill icon-yellow icon-size" viewBox="0 0 16 16"><path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2"/></svg>
-							</a>              
+							</a>
+										  
 							<!-- PROFILE -->
 							<a class="nav-item nav-link" href="{% url 'profile' %}" title="Profile">
 								<svg xmlns="http://www.w3.org/2000/svg" class="bi bi-person-fill icon-yellow icon-size" viewBox="0 0 16 16"><path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/></svg>
@@ -98,5 +100,21 @@
 <!-- JS POPPER JS / BOOTSTRAP JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<!-- LIMITTING SAUCES AND VEGGIES TO 3 -->
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			document.querySelectorAll('select.multi-limit').forEach(function(select) {
+				select.addEventListener('change', function () {
+					const selected = Array.from(select.selectedOptions);
+					if (selected.length > 3) {
+						selected[selected.length - 1].selected = false;
+						alert("You can only select up to 3 options.");
+					}
+				});
+			});
+		});
+	</script>
+
 </body>
 </html>

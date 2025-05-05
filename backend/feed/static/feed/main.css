@@ -262,7 +262,6 @@ a.text-decoration-none:hover span {
   padding: 10px 20px;
   border: 1px solid #dddddd;
   border-radius: 3px;
-  margin-bottom: 20px;
   display: flex;
   min-width: fit-content;
   overflow: auto;
@@ -532,6 +531,74 @@ a.text-decoration-none:hover span {
   width: 180px;
 }
 
+.filter-form .filter-section {
+  margin-bottom: 10px !important;
+}
 
+.filter-form .extra-margin {
+  margin-bottom: 30px !important;
+}
 
+/*Comments*/
+.comment-cube{
+  background: #ffffff;
+  padding: 10px 20px;
+  border-bottom: 1px solid #dddddd;
+  border-right: 1px solid #dddddd;
+  border-left: 1px solid #dddddd;
+  border-bottom-right-radius: 3px;
+  border-bottom-left-radius: 3px;
+  display: flex;
+  align-items: center;
+  min-width: 523px;
+  margin-right: 10px;
+  } 
 
+.comment-input {
+    flex-grow: 1;
+    height: 40px;
+    resize: none;
+    font-size: 15px;
+    margin-right: 10px;
+    padding-left: 8px;
+    padding-top: 11px;
+  }
+  
+.comment-cube button {
+    height: 40px;
+    font-size: 14px;
+    padding: 0 12px;
+    flex-shrink: 0;
+    font-size: 15px;
+  }
+
+  .comment-block{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .comment-content {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    white-space: normal;
+    margin-right: 10px;
+    display:flex;   
+    flex-wrap: nowrap;
+    gap: 5px;
+  }
+
+  .comment-line {
+    display: inline;
+    white-space: normal;
+    word-break: break-word;
+  }
+  
+  .comment-username {
+    white-space: nowrap;  /* El nombre + ':' nunca se rompe */
+  }
+  
+  .comment-text {
+    word-break: break-word;
+  }

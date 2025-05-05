@@ -1,8 +1,8 @@
 {% extends "feed/base.html" %}
 {% block content %}
-<div class="container-fluid px-0 shop-cart-container">
-    {% if cart_products %}  <!-- Check if there are products in the cart -->
-        {% for product in cart_products %}  <!-- Loop through each product in the cart -->
+<div class="container-fluid px-0 shop-cart-container pb-4">
+    {% if cart_products %}
+        {% for product in cart_products %}
             <article class="shop-cart-post-cube">
                 <div class="media-body">
                     <div class="shop-cart-rows-content"> 
@@ -17,14 +17,14 @@
                             </div>
                         </div>
 
-                    <!-- SANDWICH IMAGE -->
+                        <!-- SANDWICH IMAGE -->
                         <img class="sandwich-photo-shopping-cart" src="{{ product.sandwich_image.url }}">  
                     </div>
 
-                    <!-- QUANITY OF SANDWICH -->
+                    <!-- QUANTITY OF SANDWICH -->
                     <div class="second-row-shop-cart">
                         <div class="row quantity-shop-cart-edit">
-                            <h2 class="quantity-text-shop-cart ">Quantity:</h2>
+                            <h2 class="quantity-text-shop-cart">Quantity:</h2>
                             <select class="form-select ml-3" id="qty-cart-{{ product.id }}">
                                 {% for key, value in quantities.items %}
                                     {% if key == product.id|slugify %}
@@ -43,29 +43,40 @@
                                 <option value="10">10</option>
                             </select>
 
-                        <!-- UPDATE AND REMOVE BUTTON -->
+                            <!-- UPDATE AND REMOVE BUTTON -->
                             <button type="button" data-index="{{ product.id }}" style="margin-left: 10px;" class="btn btn-outline-secondary btn-sm mt-1 mb-1 btn-hover-white update-cart">Update</button>
                             <button type="button" data-index="{{ product.id }}" class="btn btn-outline-danger btn-sm mt-1 mb-1 btn-hover-white delete-product">Remove</button>
                         </div>
 
                         <!-- PRICE OF SANDWICH -->
-                        <h3 class="product-price-edit">€{{ product.price }}</h3>
+                        <h3 class="product-price-edit">{{ product.price }}€</h3>
                     </div>                                    
                 </div>
             </article>
         {% endfor %}
 
-        <!-- TOTAL PRICE OF SANDWICHES -->
-        {% if request.user.profile.premium %}
-            <h3 class="total-text-edit">Total (premium discount): €{{ totals|floatformat:2 }}</h3>
-        {% else %}
-            <h3 class="total-text-edit">Total: €{{ totals }}</h3>
-        {% endif %}
+        <!-- TOTAL PRICE -->
+        <div class="d-flex justify-content-between align-items-center mt-4 w-100">
+            <div class="text-start">
+                {% if request.user.profile.premium %}
+                    <h3 class="total-text-edit mb-0">Total (premium discount): {{ totals|floatformat:2 }}€</h3>
+                {% else %}
+                    <h3 class="total-text-edit mb-0">Total: {{ totals }}€</h3>
+                {% endif %}
+            </div>
+
+        <!-- CHECKOUT -->
+            <div class="text-end">
+                <a href="{% url 'checkout' %}" class="btn btn-outline-yellow">Checkout</a>
+            </div>
+        </div>        
+
+    <!-- EMPTY CART -->
     {% else %}
         <h1>Your Shopping Cart Is Empty!</h1>
     {% endif %}
-</div>
 
+</div>
 
 <script>
     // UPDATE NUMBER OF SANDWICH IN CART

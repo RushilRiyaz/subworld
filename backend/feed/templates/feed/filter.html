@@ -1,56 +1,61 @@
 <form method="get" class="filter-form">
     <div class="container position-relative">
-        
+
+        <!-- RECENT + POPULAR -->
+        <div class="filter-section">
+            <label for="id_sort">Sort By:</label><br>
+            {{ filter.form.sort }}
+        </div>
         <!-- VEGAN -->
-        <div style="margin-bottom: 10px;">
+        <div class="filter-section">
             <label>Vegan:</label><br>
             {{ filter.form.vegan }}
         </div>
         <!-- SIZE -->
-        <div style="margin-bottom: 10px;">
+        <div class="filter-section">
             <label>Size:</label><br>
             {{ filter.form.size }}
         </div>
         <!-- BREAD -->
-        <div style="margin-bottom: 10px;">
+        <div class="filter-section">
             <label>Bread:</label><br>
             {{ filter.form.bread }}
         </div>
         <!-- MEAT -->
-        <div style="margin-bottom: 10px;">
+        <div class="filter-section">
             <label>Meat:</label><br>
             {{ filter.form.meat }}
         </div>
         <!-- CHEESE -->
-        <div style="margin-bottom: 10px;">
+        <div class="filter-section">
             <label>Cheese:</label><br>
             {{ filter.form.cheese }}
         </div>
         <!-- VEGGIES -->
-        <div style="margin-bottom: 10px;">
+        <div class="filter-section">
             <label>Veggies:</label><br>
             {{ filter.form.veggies }}
         </div>
         <!-- SAUCES -->
-        <div style="margin-bottom: 10px;">
+        <div class="filter-section">
             <label>Sauces:</label><br>
             {{ filter.form.sauces }}
         </div>
         <!-- TEMP -->
-        <div style="margin-bottom: 10px;">
+        <div class="filter-section">
             <label>Temperature:</label><br>
             {{ filter.form.temp }}
         </div>
         <!-- PRICE -->
-        <div style="margin-bottom: 10px;">
+        <div class="filter-section">
             <label>Min Price:</label><br>
             {{ filter.form.price__gt }}
         </div>
-        <div style="margin-bottom: 10px;">
+        <div class="filter-section extra-margin">
             <label>Max Price:</label><br>
             {{ filter.form.price__lt }}
         </div>
-        
+
         <!-- FILTER + RESET BUTTON -->
         <div class="d-flex">
             <button type="submit" class="btn btn-outline-yellow mb-4">Filter</button>
