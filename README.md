@@ -1,14 +1,17 @@
 # SubWorld
 
 SubWorld is a community driven SubWay sandwich discovery platform. It provides the following features:
+
 - User authentication and profiles with image uploads
-- Creating, viewing and deletion of sandwich posts with attributes (vegan, temperature, size, bread, meat, cheese, veggies, sauces, price)
+- Creating, viewing and deletion of sandwich posts with attributes (vegan, temperature, size, bread, meat, cheese, veggies, sauces, price, popularity)
 - Bookmarking and commenting on posts
 - Advanced filtering and searching of sandwich posts
 - Shopping cart functionality with checkout
+- Premium Subscription for 10% discount off of all purchases
 - Media handling for sandwich and profile images
 
 ## Technology Stack
+
 - Python 3.13.2
 - Django 5.2
 - SQLite 3 (default development database)
@@ -20,6 +23,7 @@ SubWorld is a community driven SubWay sandwich discovery platform. It provides t
 - jQeury
 
 ## Installation
+
 1. Clone the repository
    ```zsh
    git clone <repository-url>
@@ -44,6 +48,3 @@ SubWorld is a community driven SubWay sandwich discovery platform. It provides t
    python3 manage.py runserver
    ```
    The website will be accesible at http://127.0.0.1:8000/
-  
-
-
