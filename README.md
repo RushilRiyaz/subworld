@@ -40,6 +40,7 @@ SubWorld is a community driven SubWay sandwich discovery platform. It provides t
    ```
 5. Run the development server
    ```zsh
+   cd backend
    python3 manage.py runserver
    ```
    The website will be accesible at http://127.0.0.1:8000/
