@@ -35,7 +35,7 @@ SubWorld is a community driven SubWay sandwich discovery platform. It provides t
    ```
 3. Install dependencies
    ```zsh
-   pip freeze > requirements.txt
+   pip install -r requirements.txt
    ```
 4. Create superuser (optional)
    ```zsh
