@@ -52,7 +52,7 @@ SubWorld is a community driven SubWay sandwich discovery platform. It provides t
    The website will be accesible at http://127.0.0.1:8000/
 
 ## Previews
-<img width="800" height="800" alt="homepage" src="https://github.com/user-attachments/assets/b0fe9a53-7c06-41e6-8755-9eaf3f58bc6f" />
+<img width="1512" height="860" alt="homepage" src="https://github.com/user-attachments/assets/b0fe9a53-7c06-41e6-8755-9eaf3f58bc6f" />
 
 <img width="1512" height="860" alt="post view" src="https://github.com/user-attachments/assets/140643af-715e-4bd3-bae7-b0f0642b10d1" />
 
