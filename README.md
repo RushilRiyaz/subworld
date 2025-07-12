@@ -54,6 +54,8 @@ SubWorld is a community driven SubWay sandwich discovery platform. It provides t
 ## Previews
 <img width="1499" height="858" alt="homepage" src="https://github.com/user-attachments/assets/b0fe9a53-7c06-41e6-8755-9eaf3f58bc6f" />
 
+<img width="1512" height="860" alt="post view" src="https://github.com/user-attachments/assets/140643af-715e-4bd3-bae7-b0f0642b10d1" />
+
 <img width="1512" height="859" alt="filter" src="https://github.com/user-attachments/assets/07eedd09-d976-4f2e-b189-cc028a4d28f8" />
 
 <img width="1512" height="859" alt="shopping cart" src="https://github.com/user-attachments/assets/99dbc773-2909-4dff-8ac1-da63a5d692e4" />
